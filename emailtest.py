@@ -13,4 +13,4 @@ def send_test_email(sender_email, receiver_email, smtp_server, smtp_port):
     except Exception as e:
         print(f"Error: {e}")
 
-send_test_email('cyberdon43@gmail.com', 'josephdeyon3@gmail.com', 'smtp.gmail.com', 587)
+send_test_email('sender_email', 'receiver_email', 'smtp.gmail.com', 587)

@@ -2,9 +2,6 @@
 
 import requests
 
-# Define the target API endpoint
-api_url = "https://example.com/api"
-
 # Define a list of common endpoints to test
 endpoints = [
     "/users",
@@ -15,24 +12,30 @@ endpoints = [
 ]
 
 # Function to test endpoints
-def test_endpoints():
+def test_endpoints(api_url):
+    print(f"\n[*] Testing API base: {api_url}")
     for endpoint in endpoints:
         url = api_url + endpoint
-        response = requests.get(url)
-        
-        print(f"Testing {url} - Status Code: {response.status_code}")
-        
-        if response.status_code == 200:
-            print("Success: Accessible endpoint.")
-        elif response.status_code == 401:
-            print("Unauthorized: Access denied.")
-        elif response.status_code == 403:
-            print("Forbidden: Access forbidden.")
-        elif response.status_code == 404:
-            print("Not Found: Endpoint does not exist.")
-        else:
-            print("Error: Unexpected status code.")
+        try:
+            response = requests.get(url, timeout=5)
+            print(f"\n[+] Testing {url}")
+            print(f"    ↳ Status Code: {response.status_code}")
+            
+            if response.status_code == 200:
+                print("    ✅ Success: Accessible endpoint.")
+            elif response.status_code == 401:
+                print("    🔒 Unauthorized: Access denied.")
+            elif response.status_code == 403:
+                print("    ⛔ Forbidden: Access forbidden.")
+            elif response.status_code == 404:
+                print("    ❌ Not Found: Endpoint does not exist.")
+            else:
+                print("    ⚠️  Unexpected status code.")
+        except requests.exceptions.RequestException as e:
+            print(f"    ❌ Request failed: {e}")
 
 # Run the test
 if __name__ == "__main__":
-    test_endpoints()
+    domain = input("Enter the target domain (e.g., https://example.com): ").strip().rstrip('/')
+    api_url = domain + "/api"
+    test_endpoints(api_url)
